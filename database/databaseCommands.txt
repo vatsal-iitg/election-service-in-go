@@ -1,0 +1,46 @@
+CREATE TABLE election_officers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE constituencies (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+select * from election_officers;
+
+select * from constituencies;
+
+CREATE TABLE candidates (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INT,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE candidate_constituencies (
+    id SERIAL PRIMARY KEY,
+    candidate_id INT,
+    constituency_id INT,
+    FOREIGN KEY (candidate_id) REFERENCES candidates(id),
+    FOREIGN KEY (constituency_id) REFERENCES constituencies(id)
+);
+select * from candidates;
+select * from candidate_constituencies;
+
+CREATE TABLE voters (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    constituency_id INT NOT NULL,
+    candidate_id INT DEFAULT NULL,
+    FOREIGN KEY (constituency_id) REFERENCES constituencies (id),
+    FOREIGN KEY (candidate_id) REFERENCES candidates (id)
+);
