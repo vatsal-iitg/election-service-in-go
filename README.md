@@ -12,3 +12,7 @@ I created a **REST API** for effective election management using **Go-Lang**, wi
 
 Here is the demo of working of this API. All the routes are tested using Postman :-
 
+
+
+https://github.com/vatsal-iitg/election-service-in-go/assets/128295847/a4f85abe-b689-49dc-8532-3ae227730bfc
+
