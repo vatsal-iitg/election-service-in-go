@@ -22,7 +22,7 @@ func RegisterElectionOfficer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	log.Println("binding json completed")
+	log.Println("Binding json completed for registering the election officer")
 
 	// setting up database connection
 	db, err := database.ConnectDB()

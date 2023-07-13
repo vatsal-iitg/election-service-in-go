@@ -28,10 +28,7 @@ func CreateConstituency(c *gin.Context) {
 	log.Println("connection established with database")
 
 	// database insertion
-	insertQuery := `
-    INSERT INTO constituencies (name) 
-    VALUES ($1) RETURNING id`
-	err = db.QueryRow(insertQuery, constituency.Name).Scan(&constituency.ID)
+	err = db.QueryRow("INSERT INTO constituencies (name) VALUES ($1) RETURNING id", constituency.Name).Scan(&constituency.ID)
 	if err != nil {
 		log.Fatalf("Failed to insert constituency: %v in createConstituency", err)
 		return
@@ -59,11 +56,7 @@ func UpdateConstituency(c *gin.Context) {
 	defer db.Close()
 
 	// updating the data
-	updateQuery := `
-    UPDATE constituencies
-    SET name = $1
-    WHERE id = $2`
-	_, err = db.Exec(updateQuery, constituency.Name, constituency.ID)
+	_, err = db.Exec("UPDATE constituencies SET name = $1 WHERE id = $2", constituency.Name, constituency.ID)
 	if err != nil {
 		log.Fatalf("Failed to update constituency: %v", err)
 		return

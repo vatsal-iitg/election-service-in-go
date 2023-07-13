@@ -8,6 +8,7 @@ import (
 	middleware "github.com/vatsal-iitg/election-service-in-go/middleware"
 )
 
+// The gin.Engine type in Gin framework represents the main router engine that handles routing and HTTP request handling.
 func RouterHandler(incomingRoutes *gin.Engine) {
 	log.Println("Entered routeshandler")
 
@@ -24,11 +25,9 @@ func RouterHandler(incomingRoutes *gin.Engine) {
 
 	electionOfficerRoutes := incomingRoutes.Group("/election-officer")
 	electionOfficerRoutes.Use(middleware.AuthMiddlewareForOfficer())
-
 	{
 		electionOfficerRoutes.POST("/register", controller.RegisterElectionOfficer)
 		electionOfficerRoutes.POST("/login", controller.LoginElectionOfficer)
-
 		electionOfficerRoutes.Use(middleware.AuthorizedOnlyForOfficer())
 		electionOfficerRoutes.POST("/create-constituency", controller.CreateConstituency)
 		electionOfficerRoutes.PUT("/update-constituency/:id", controller.UpdateConstituency)

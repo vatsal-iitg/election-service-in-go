@@ -10,10 +10,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const (
-	voterTokenExpirationTime = 24 * time.Hour // token expiration time
-)
-
 // jwt token for voter
 func GenerateTokenForVoter(voterID, email string) (string, error) {
 
@@ -30,7 +26,7 @@ func GenerateTokenForVoter(voterID, email string) (string, error) {
 		return "", err
 	}
 
-	// craeting the token with the claims
+	// creating the token with the claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// signing the token with the jwt secret key

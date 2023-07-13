@@ -11,6 +11,7 @@ import (
 )
 
 func GenerateTokenForOfficer(id int, email string, role string) (string, error) {
+
 	//expiration time for the token
 	expirationTime := time.Now().Add(24 * time.Hour)
 

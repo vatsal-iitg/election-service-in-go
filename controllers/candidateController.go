@@ -16,11 +16,11 @@ func RegisterCandidate(c *gin.Context) {
 
 	// bind the data as json
 	if err := c.ShouldBindJSON(&candidate); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error while binding the candidate's details"})
 		return
 	}
 
-	// validating the data by struct
+	// validating the candidates data by struct Candidate
 	validate := validator.New()
 	if err := validate.Struct(candidate); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -45,28 +45,19 @@ func RegisterCandidate(c *gin.Context) {
 	if existingCandidate != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Candidate already registered"})
 		return
-	}
+	} // this is exactly the same as err = sql.ErrNoRows
 
 	// data insertion
-	insertCandidateQuery := `
-		INSERT INTO candidates (name, age, email, password)
-		VALUES ($1, $2, $3, $4)
-		RETURNING id
-	`
 	var candidateID int
-	err = db.QueryRow(insertCandidateQuery, candidate.Name, candidate.Age, candidate.Email, candidate.Password).Scan(&candidateID)
+	err = db.QueryRow("INSERT INTO candidates (name, age, email, password) VALUES  ($1, $2, $3, $4) RETURNING id", candidate.Name, candidate.Age, candidate.Email, candidate.Password).Scan(&candidateID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register candidate"})
 		return
 	}
 
 	// mapping candidates to constituencies
-	insertCandidateConstituencyQuery := `
-		INSERT INTO candidate_constituencies (candidate_id, constituency_id)
-		VALUES ($1, $2)
-	`
 	for _, constituencyID := range candidate.Constituencies {
-		_, err = db.Exec(insertCandidateConstituencyQuery, candidateID, constituencyID)
+		_, err = db.Exec("INSERT INTO candidate_constituencies (candidate_id, constituency_id) VALUES ($1, $2)", candidateID, constituencyID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register candidate"})
 			return
@@ -87,8 +78,7 @@ func GetCandidateByEmail(email string) (*models.Candidate, error) {
 	defer db.Close()
 
 	// finding the candidate
-	query := "SELECT id, name, email, password FROM candidates WHERE email = $1"
-	row := db.QueryRow(query, email)
+	row := db.QueryRow("SELECT id, name, email, password FROM candidates WHERE email = $1", email)
 
 	// struct initialization
 	candidate := &models.Candidate{}
@@ -96,7 +86,7 @@ func GetCandidateByEmail(email string) (*models.Candidate, error) {
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// does not exist
-			return nil, nil
+			return nil, nil // we have returned this because there is no error but the candidate does not exist
 		}
 		return nil, err
 	}

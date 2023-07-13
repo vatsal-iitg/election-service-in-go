@@ -11,9 +11,6 @@ CREATE TABLE constituencies (
     name VARCHAR(100) NOT NULL
 );
 
-select * from election_officers;
-
-select * from constituencies;
 
 CREATE TABLE candidates (
     id SERIAL PRIMARY KEY,
@@ -30,8 +27,6 @@ CREATE TABLE candidate_constituencies (
     FOREIGN KEY (candidate_id) REFERENCES candidates(id),
     FOREIGN KEY (constituency_id) REFERENCES constituencies(id)
 );
-select * from candidates;
-select * from candidate_constituencies;
 
 CREATE TABLE voters (
     id SERIAL PRIMARY KEY,

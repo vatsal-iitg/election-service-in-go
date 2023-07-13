@@ -21,13 +21,11 @@ func IsAuthorizedElectionOfficer(c *gin.Context) bool {
 		return false
 	}
 
-	// Check if the user is an election officer
 	electionOfficer, ok := user.(models.ElectionOfficer)
 	if !ok {
 		return false
 	}
 
-	// Perform additional authorization checks for election officer, if required
 	if electionOfficer.Role != "admin" {
 		return false
 	}
@@ -107,7 +105,6 @@ func AuthorizedOnlyForOfficer() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 		c.Next()
 	}
 }
