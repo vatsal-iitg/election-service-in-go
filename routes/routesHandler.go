@@ -12,10 +12,10 @@ import (
 func RouterHandler(incomingRoutes *gin.Engine) {
 	log.Println("Entered routeshandler")
 
-	voterGroup := incomingRoutes.Group("/voters")
+	voterRoutes := incomingRoutes.Group("/voters")
 	{
-		voterGroup.POST("/register", controller.RegisterVoter)
-		voterGroup.POST("/login", controller.LoginVoter)
+		voterRoutes.POST("/register", controller.RegisterVoter)
+		voterRoutes.POST("/login", controller.LoginVoter)
 	}
 
 	candidateRoutes := incomingRoutes.Group("/candidates")
