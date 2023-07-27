@@ -60,7 +60,7 @@ func RegisterVoter(c *gin.Context) {
 		var candidateID int
 		err = db.QueryRow("SELECT id FROM candidate_constituencies WHERE candidate_id = $1 AND constituency_id = $2",
 			voter.CandidateID, voter.ConstituencyID).Scan(&candidateID)
-		// the above line checksw whether the voter is registered to that constituency or not
+		// the above line checks whether the voter is registered to that constituency or not
 		if err != nil {
 			if err == sql.ErrNoRows {
 				c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid candidate ID for the specified constituency"})

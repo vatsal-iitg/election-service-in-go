@@ -15,6 +15,7 @@ import (
 
 // register a election officer.
 func RegisterElectionOfficer(c *gin.Context) {
+	// The *gin.Context type represents the context of the current HTTP request. It contains information about the request, such as the request parameters, headers, and other contextual details.
 	log.Println("Entering RegisterElectionOfficer")
 
 	var officer models.ElectionOfficer
